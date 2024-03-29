@@ -120,6 +120,7 @@ class _CardDiagnosticoState extends State<CardDiagnostico> {
       width: double.infinity,
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
+          
           color: Colors.grey.withOpacity(0.5),
           spreadRadius: 0.2,
           blurRadius: 10,
@@ -127,7 +128,7 @@ class _CardDiagnosticoState extends State<CardDiagnostico> {
         ),
       ], borderRadius: BorderRadius.circular(15), color: Colors.white),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
         child: Column(
           children: [
             RadioGroup(

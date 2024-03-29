@@ -1,7 +1,7 @@
 import 'package:mysql1/mysql1.dart';
 import '../shared/user_data.dart';
 
-class DataBase {
+class DataBaseQuerys {
   //todo  Datos de conexión
   final ConnectionSettings settings = ConnectionSettings(
     host: 'b86mlzc5ddsq8lhd9fw4-mysql.services.clever-cloud.com',
@@ -116,21 +116,31 @@ class DataBase {
 
   //todo Contar registros por fecha y tipo de atención
   Future<int?> countRecordsByDateAndTypeAttention(
-      String fecha, String tipoAtencion , int doctorId) async {
+      String fecha, String tipoAtencion, int doctorId) async {
     try {
+      if (fecha.isEmpty || tipoAtencion.isEmpty || doctorId <= 0) {
+        throw ArgumentError('Invalid parameters provided.');
+      }
+
       var conn = await _getConnection();
 
-      // Consulta SQL para contar los registros
       var result = await conn.query(
         'SELECT COUNT(*) AS count FROM registro_diario WHERE fecha = ? AND tipo_atencion = ? AND doctor_id = ?',
-        [fecha, tipoAtencion , doctorId],
+        [fecha, tipoAtencion, doctorId],
       );
 
-      // Extraer el resultado del conteo de registros
+      if (result.isEmpty) {
+        // No se encontraron registros que coincidan con los criterios
+        await _closeConnection(conn);
+        return 0;
+      }
+
       var count = result.first.fields['count'] as int;
       await _closeConnection(conn);
+
       return count;
     } catch (e) {
+      // Log the error for debugging purposes
       return null;
     }
   }

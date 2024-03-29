@@ -34,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
   //todo Agregar a SharedPreferences el valor de requiredLoading
   _setRequiredLoading(String username, String password) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    UserData.id = await DataBase().getId(username, password);
+    UserData.id = await DataBaseQuerys().getId(username, password);
     setState(() {
       prefs.setInt("dataId", UserData.id);
       prefs.setString("dataUserName", UserData.userName);
@@ -129,7 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       });
 
                       bool? authenticationResult =
-                          await DataBase().authenticateUser(
+                          await DataBaseQuerys().authenticateUser(
                         controllUser.text,
                         controllPass.text,
                       );
@@ -143,7 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           controllUser.text,
                           controllPass.text,
                         );
-                        int id = await DataBase()
+                        int id = await DataBaseQuerys()
                             .getId(controllUser.text, controllPass.text);
                         if (id != 0) {
                           Navigator.pushNamed(context, '/home');

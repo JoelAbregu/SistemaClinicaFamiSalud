@@ -649,7 +649,7 @@ class _FormScreenState extends State<FormScreen> {
                                               onPressed: () async {
                                                 //todo ENVIO DE DATOS
 
-                                                bool res = await DataBase()
+                                                bool res = await DataBaseQuerys()
                                                     .insertRecordJournal(
                                                         Data.assignData());
                                                 if (res == true) {

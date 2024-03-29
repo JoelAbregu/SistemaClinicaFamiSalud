@@ -2,16 +2,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:registro_diario_mobil_1_0_1/config/theme/apptheme.dart';
-import 'package:registro_diario_mobil_1_0_1/helpers/data.dart';
-import 'package:registro_diario_mobil_1_0_1/helpers/data_base_querys.dart';
-import 'package:registro_diario_mobil_1_0_1/presentation/screens/form_screen.dart';
-import 'package:registro_diario_mobil_1_0_1/presentation/screens/form_ultrasound_screen.dart';
-import 'package:registro_diario_mobil_1_0_1/shared/user_data.dart';
+import 'package:intl/intl.dart';
+import '../../config/theme/apptheme.dart';
+import '../../helpers/data.dart';
 
+import '../../helpers/data_base_querys.dart';
+import '../../shared/user_data.dart';
 import '../widgets/card_report_widget.dart';
+import 'form_screen.dart';
+import 'form_ultrasound_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
     initializeDateFormatting('es_ES');
     DataDB.doctorId = UserData.id;
-    numberReport();
+    fetchReports();
   }
 
   @override
@@ -46,8 +46,8 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _selectedDate = date;
       _scrollToSelectedDate();
-      numberReport();
     });
+    fetchReports();
   }
 
   Future<void> _selectDateFromPicker(BuildContext context) async {
@@ -59,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
     if (picked != null && picked != _selectedDate) {
       _selectDate(picked);
-      numberReport();
+      fetchReports();
     }
   }
 
@@ -72,7 +72,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ((_selectedDate.day - 1) * dayWidth + dayWidth / 2 - screenWidth / 2)
             .clamp(0.0, totalWidth - screenWidth);
     _scrollController.jumpTo(scrollTo);
-    numberReport();
   }
 
   String _getMonthName(DateTime date) {
@@ -94,18 +93,27 @@ class _HomeScreenState extends State<HomeScreen> {
     return months[date.month];
   }
 
-  void numberReport() async {
-    nReportEmergency = await DataBase().countRecordsByDateAndTypeAttention(
-        _selectedDate.toString(), "Emergencia", UserData.id);
-    nReportAmbulatory = await DataBase().countRecordsByDateAndTypeAttention(
-        _selectedDate.toString(), "Ambulatorio", UserData.id);
-    if (mounted) {
-      setState(() {});
-    }
-  }
-
   int? nReportEmergency;
   int? nReportAmbulatory;
+
+// Define una función para realizar la consulta y actualizar el estado
+  Future<void> fetchReports() async {
+    final formatter = DateFormat('yyyy-MM-dd');
+    String date = formatter.format(_selectedDate);
+
+    setState(() {
+      nReportEmergency = null;
+      nReportAmbulatory = null;
+    });
+
+    // Realiza las consultas
+    nReportEmergency = await DataBaseQuerys()
+        .countRecordsByDateAndTypeAttention(date, "Emergencia", UserData.id);
+    nReportAmbulatory = await DataBaseQuerys()
+        .countRecordsByDateAndTypeAttention(date, "Ambulatorio", UserData.id);
+    // Actualiza la interfaz de usuario con los resultados de la consulta
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -170,20 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     return GestureDetector(
                       onTap: () async {
                         _selectDate(date);
-                        nReportEmergency = await DataBase()
-                            .countRecordsByDateAndTypeAttention(
-                                (_selectedDate.toString()),
-                                "Emergencia",
-                                UserData.id);
-                        nReportAmbulatory = await DataBase()
-                            .countRecordsByDateAndTypeAttention(
-                                (_selectedDate.toString()),
-                                "Ambulatorio",
-                                UserData.id);
-
-                        if (mounted) {
-                          setState(() {});
-                        }
+                        fetchReports();
                       },
                       child: Padding(
                         padding: EdgeInsets.symmetric(
@@ -219,7 +214,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Text(
                             day.toString(),
                             style: TextStyle(
-                              fontSize: isSelected ? 25 : 20,
+                              fontSize: isSelected ? 22 : 17,
                               fontWeight: isSelected
                                   ? FontWeight.w400
                                   : FontWeight.w300,
