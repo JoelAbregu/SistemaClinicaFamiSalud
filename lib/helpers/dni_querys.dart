@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
- 
 
 //todo Mandar el DNI a consultar
 Future<Map<String, dynamic>> consultDNI(String dni) async {
@@ -13,7 +12,10 @@ Future<Map<String, dynamic>> consultDNI(String dni) async {
       final data = json.decode(response.body);
       return data;
     } else {
-       return {'success': false, 'error': 'Error en la solicitud HTTP: ${response.statusCode}'};
+      return {
+        'success': false,
+        'error': 'Error en la solicitud HTTP: ${response.statusCode}'
+      };
     }
   } catch (e) {
     return {'success': false, 'error': e.toString()};
