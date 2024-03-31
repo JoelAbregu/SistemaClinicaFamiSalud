@@ -1,5 +1,4 @@
 // ignore_for_file: use_build_context_synchronously, deprecated_member_use
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,7 +14,7 @@ import 'package:registro_diario_mobil_1_0_1/shared/cie10.dart';
 import 'package:registro_diario_mobil_1_0_1/shared/user_data.dart';
 import 'package:status_alert/status_alert.dart';
 import '../../helpers/data_base_querys.dart';
-import '../../helpers/dni_querys.dart';
+import '../../helpers/api_querys.dart';
 import '../widgets/form/text_input_form_widget.dart';
 import '../widgets/form/cie.dart';
 import '../widgets/form/diagnosis_card_widget.dart';

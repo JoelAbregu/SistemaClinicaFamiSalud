@@ -11,7 +11,6 @@ import '../../helpers/data_base_querys.dart';
 import '../../shared/user_data.dart';
 import '../widgets/card_report_widget.dart';
 import 'form_screen.dart';
-import 'form_ultrasound_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -290,20 +289,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                     ),
                     const SizedBox(height: 30),
-                    CardReport(
-                        query: query,
-                        title: 'Ecografia',
-                        image: "assets/lottie/ecografia.json",
-                        function: () => _navigateToFormScreen("Ecografia"),
-                        numberReport: Text(
-                          "0",
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                            color: AppTheme.colorPrimary,
-                            fontSize: 25,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        )),
                   ],
                 ),
               ),
@@ -319,9 +304,7 @@ class _HomeScreenState extends State<HomeScreen> {
     DataDB.tipoAtencion = type;
     FormData.image = "assets/lottie/${type.toLowerCase()}.json";
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-      return DataDB.tipoAtencion == 'Ecografia'
-          ? const FormUltrasoundsCScreen()
-          : const FormScreen();
+      return FormScreen();
     }));
     Data.initData();
   }
