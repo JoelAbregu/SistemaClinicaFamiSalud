@@ -4,11 +4,11 @@ import '../shared/user_data.dart';
 class DataBaseQuerys {
   //todo  Datos de conexión
   final ConnectionSettings settings = ConnectionSettings(
-    host: 'b86mlzc5ddsq8lhd9fw4-mysql.services.clever-cloud.com',
+    host: 'localhost',
     port: 3306,
-    user: 'uoxhcum30vim8vzk',
-    password: 'BK0fLgnQyJoLmvpWCcAp',
-    db: 'b86mlzc5ddsq8lhd9fw4',
+    user: 'root', 
+    password: '',
+    db: 'famisalud',
   );
 
   //todo Método privado para establecer la conexión
